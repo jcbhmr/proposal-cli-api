@@ -1,0 +1,8 @@
+{
+    "type": "module",
+    "workspaces": ["./polyfill/"],
+    "devDependencies": {},
+    "scripts": {
+        "build": "bikeshed"
+    }
+}
