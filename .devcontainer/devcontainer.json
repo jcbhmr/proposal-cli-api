@@ -1,0 +1,4 @@
+{
+  "image": "mcr.microsoft.com/devcontainers/javascript-node",
+  "updateContentCommand": "curl -LsSf https://astral.sh/uv/install.sh | sh && uv tool install bikeshed"
+}
