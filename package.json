@@ -1,8 +1,12 @@
 {
     "type": "module",
     "workspaces": ["./polyfill/"],
-    "devDependencies": {},
+    "//devDependencies": {
+        "@jcbhmr/bikeshed": "^7.0.6"
+    },
     "scripts": {
-        "build": "bikeshed"
+        "build": "bikeshed",
+        "dev": "bikeshed serve",
+        "prepare": "npm run build"
     }
 }

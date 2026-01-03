@@ -30,13 +30,13 @@ const env = createStorageLike({
       Deno.env.delete(key);
     }
   },
-})
+});
 
-const exit = Deno.exit.bind(Deno)
+const exit = Deno.exit.bind(Deno);
 
 const stdin = Object.assign(Deno.stdin.readable, { isTTY: Deno.stdin.isTerminal() });
-const stdout = Object.assign(Deno.stdout.writable, { isTTY: Deno.stdout.isTerminal() })
-const stderr = Object.assign(Deno.stderr.writable, { isTTY: Deno.stderr.isTerminal() })
+const stdout = Object.assign(Deno.stdout.writable, { isTTY: Deno.stdout.isTerminal() });
+const stderr = Object.assign(Deno.stderr.writable, { isTTY: Deno.stderr.isTerminal() });
 
 export const CLI = {
   args,
@@ -45,4 +45,4 @@ export const CLI = {
   stdin,
   stdout,
   stderr,
-}
+};

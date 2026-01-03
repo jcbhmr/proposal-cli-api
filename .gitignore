@@ -1,3 +1,7 @@
+# Bikeshed output
+/index.html
+
+#region https://github.com/github/gitignore/blob/main/Node.gitignore
 # Logs
 logs
 *.log
@@ -139,3 +143,4 @@ dist
 vite.config.js.timestamp-*
 vite.config.ts.timestamp-*
 .vite/
+#endregion

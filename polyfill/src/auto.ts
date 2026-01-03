@@ -1,10 +1,10 @@
-import type { CLI } from "#index"
+import type * as index from "#index";
 
 declare global {
-    var CLI: CLI;
+  var CLI: typeof index.CLI;
 }
 
 if (typeof CLI === "undefined") {
-    const CLI = await import("#index");
-    (globalThis as any).CLI = CLI;
+  const index = await import("#index");
+  globalThis.CLI = index.CLI;
 }

@@ -16,52 +16,120 @@ Introduction {#intro}
 
 TODO
 
+<xmp class=idl>
+interface CLI {
+  // defined in partial interfaces below
+};
+</xmp>
+
 Arguments {#args}
 -----------------
 
-<pre class=idl>
+TODO
+
+<xmp class=idl>
 partial interface CLI {
-    readonly attribute FrozenArray<DOMString> args;
+  readonly attribute FrozenArray<DOMString> args;
+};
+</xmp>
+
+<div class=example>
+
+{{args}} omits any runtime-specific arguments from the returned arguments list. The name of the file passed to the JavaScript runtime is considered a runtime-specific argument and is therefore omitted. Note that there is not always a script file name available (REPL or eval mode).
+
+```sh
+node \
+  --env-file=./.env.development \
+  --import @wintertc55/cool-loader \
+  --no-warnings \
+  ./scripts/greet.js Alice Bob "de la Cruz"
+```
+
+```js
+for (const arg of CLI.args) {
+  console.log(`Hello, ${arg}!`);
 }
-</pre>
+// Output:
+// Hello, Alice!
+// Hello, Bob!
+// Hello, de la Cruz!
+```
+
+</div>
 
 Environment Variables {#env}
 ----------------------------
 
-<pre class=idl>
+<xmp class=idl>
 interface CLIEnv {
-    getter DOMString? get(DOMString key);
-    setter undefined set(DOMString key, DOMString value);
-    deleter undefined delete(DOMString key);
-    boolean has(DOMString key);
-    readonly attribute unsigned long size;
-    iterable<DOMString, DOMString>;
-}
+  getter DOMString? get(DOMString key);
+  setter undefined set(DOMString key, DOMString value);
+  deleter undefined delete(DOMString key);
+  boolean has(DOMString key);
+  readonly attribute unsigned long size;
+  iterable<DOMString, DOMString>;
+};
 
 partial interface CLI {
-    readonly attribute CLIEnv env;
-}
-</pre>
+  readonly attribute CLIEnv env;
+};
+</xmp>
 
 Standard streams {#stdio}
 -------------------------
 
-<pre class=idl>
+<xmp class=idl>
 interface CLIReadableStream : ReadableStream {
-  Promise<ReadableStreamReadResult> read();
+  Promise<ReadableStreamReadResult> read(); // Uint8Array
+  boolean supports(DOMString feature);
 };
 
+partial interface CLI {
+  readonly attribute CLIReadableStream stdin;
+};
+</xmp>
+
+<xmp class=idl>
 typedef (BufferSource or Blob or USVString) CLIWriteChunkType;
 
 interface CLIWritableStream : WritableStream {
   Promise<undefined> write(FileSystemWriteChunkType data);
+  boolean supports(DOMString feature);
 };
 
 partial interface CLI {
-    readonly attribute CLIWritableStream stdout;
-    readonly attribute CLIWritableStream stderr;
+  readonly attribute CLIWritableStream stdout;
+  readonly attribute CLIWritableStream stderr;
+};
+</xmp>
+
+<div class=example>
+
+This is an example of checking for terminal capabilities using `CLI.stdout.supports()` with some common well-known feature names.
+
+```js
+if (CLI.stdout.supports("color")) {
+  console.log("%cSupports color!", "color: green;");
 }
-</pre>
+if (CLI.stdout.supports("truecolor")) {
+  console.log("%cSupports truecolor!", "color: rgb(126, 16, 216);"); // custom purple
+}
+if (CLI.stdout.supports("emoji")) {
+  console.log("Supports emoji! 🚀✨");
+}
+if (CLI.stdout.supports("hyperlink")) {
+  console.log(`Supports hyperlinks! ${ansiEscapes.link("WinterCG", "https://wintercg.org/")}`);
+}
+if (CLI.stdout.supports("image")) {
+  const response = await fetch("https://example.org/cool-image.png");
+  const data = await response.arrayBuffer();
+  console.log(`Supports images! ${ansiEscapes.image(data)}`);
+}
+```
+
+</div>
+
+<!--
 
 ## Explainer
 
@@ -201,3 +269,4 @@ While this could be helped with a library (boilerplate :/) or by more runtimes i
 
 For the origin and selfish (@CanadaHonk) reasons, I was looking at adding an arguments API to my JS engine+runtime and didn't know how I should expose them, so started this proposal :^)
 
+-->
